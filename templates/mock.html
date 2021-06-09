@@ -18,14 +18,14 @@
             {% for index in colno %}
             <div class="inputwrapper">
               <div class="box">
-                <input type="text" id="_key{{ index }}" class="fadeIn second" name="_key{{ index }}" placeholder="Column Name {{ index }}">
+                <input type="text" id="_key{{ index }}" class="fadeIn second" name="_key{{ index }}" placeholder="Column Name {{ index }}" required>
               </div>
               <div class="box">
-                <input type="text" id="_val{{ index }}" class="fadeIn second" name="_val{{ index }}" placeholder="Value1,Value2,Value3,...">
+                <input type="text" id="_val{{ index }}" class="fadeIn second" name="_val{{ index }}" placeholder="Value1,Value2,Value3,..." required>
               </div>
             </div>
             {% endfor %}
-            <input type="text" id="rowno" class="fadeIn second" name="rowno" placeholder="Total Rows">
+            <input type="text" id="rowno" class="fadeIn second" name="rowno" placeholder="Total Rows" required>
             <input type="submit" class="fadeIn fourth" value="Let's Mock!">
             </form>
           <!-- Remind Passowrd -->
