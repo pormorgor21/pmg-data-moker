@@ -14,7 +14,12 @@
             <h3>Data Mocker</h3>
           </div>
           <hr>
-          <p>{{ status }} - You Can Copy Below Table and Paste to Excel</p>
+          {% if status %}
+          <p>OK - You Can Copy Below Table and Paste to Excel.</p>
+          {% else %}
+          <p>Fail - Please re-check your Total Rows.</p>
+          {% endif %}
+          
           <table class="table">
             <tr>
               {% for key in keys %}
@@ -31,7 +36,8 @@
           </table>
           
           <div id="formFooter">
-            <a class="underlineHover" href="/">Back to Home</a>
+            <a class="underlineHover atag" href="javascript:history.back()">Back to Data Form</a>
+            <a class="underlineHover atag" href="/">Back to Home</a>
           </div>
       
         </div>

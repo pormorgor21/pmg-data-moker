@@ -65,16 +65,26 @@ def to_csv(keys, data):
 async def index(request: Request):
     return templates.TemplateResponse("index.html", {
         "request": request,
-        "title": "Data Mocker"
+        "title": "Data Mocker",
+        "status": True,
     })
 
 # Mocking Page
 @app.get("/mock", response_class=HTMLResponse)
-async def mock(request: Request, colno: int):
-    return templates.TemplateResponse("mock.html", {
+async def mock(request: Request):
+    # check colno is integer
+    try:
+        colno = int(str(request.query_params).replace("colno=",""))
+        return templates.TemplateResponse("mock.html", {
+            "request": request,
+            "title": "Data Mocker",
+            "colno": [index for index in range(1, colno + 1)]
+        })
+    except:
+        return templates.TemplateResponse("index.html", {
         "request": request,
         "title": "Data Mocker",
-        "colno": [index for index in range(1, colno + 1)]
+        "status": False
     })
 
 # Mocked Page
@@ -97,7 +107,7 @@ async def mock(request: Request):
         return templates.TemplateResponse("mocked.html", {
             "request": request,
             "title": "Data Mocker",
-            "status": "OK",
+            "status": True,
             "keys": keys,
             "data": data,
         })
@@ -106,7 +116,7 @@ async def mock(request: Request):
         return templates.TemplateResponse("mocked.html", {
             "request": request,
             "title": "Data Mocker",
-            "status": "Failed",
+            "status": False,
         })
 
 

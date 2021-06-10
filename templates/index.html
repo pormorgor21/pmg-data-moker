@@ -19,7 +19,11 @@
             <input type="text" id="colno" class="fadeIn second" name="colno" placeholder="Enter Number of Column(s)" required>
             <input type="submit" class="fadeIn fourth" value="Next">
           </form>
-      
+          {% if status %}
+
+          {% else %}
+            <p>Please Insert Number of Column as Integer</p>
+          {% endif %}
           <!-- Remind Passowrd -->
           <div id="formFooter">
             <a class="underlineHover" href="/howtouse">How to Use ?</a>
