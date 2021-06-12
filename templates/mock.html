@@ -1,39 +1,62 @@
 <html>
-<head>
+  <head>
     <title>{{ title }}</title>
-    <link href="{{ url_for('static', path='/styles.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', path='/styles.css') }}" rel="stylesheet" />
     <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-</head>
-<body>
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <div class="wrapper fadeInDown">
-        <div id="formContent">
-      
-          <div class="fadeIn first">
-            <h3>Data Mocker</h3>
-          </div>
-          <form action="/mocked" method="get">
-            
-            {% for index in colno %}
-            <div class="inputwrapper">
-              <div class="box">
-                <input type="text" id="_key{{ index }}" class="fadeIn second" name="_key{{ index }}" placeholder="Column Name {{ index }}" required>
-              </div>
-              <div class="box">
-                <input type="text" id="_val{{ index }}" class="fadeIn second" name="_val{{ index }}" placeholder="Value1,Value2,Value3,..." required>
-              </div>
+      <div id="formContent">
+        <div class="fadeIn first">
+          <h3>Data Mocker</h3>
+        </div>
+        <form action="/mocked" method="get">
+          {% for index in colno %}
+          <div class="inputwrapper">
+            <div class="box">
+              <input
+                type="text"
+                id="_key{{ index }}"
+                class="fadeIn second"
+                name="_key{{ index }}"
+                placeholder="Column Name {{ index }}"
+                required
+              />
             </div>
-            {% endfor %}
-            <input type="text" id="rowno" class="fadeIn second" name="rowno" placeholder="Total Rows" required>
-            <input type="submit" class="fadeIn fourth" value="Let's Mock!">
-            </form>
-          <!-- Remind Passowrd -->
-          <div id="formFooter">
-            <a class="underlineHover" href="/">Back to Home</a>
+            <div class="box">
+              <input
+                type="text"
+                id="_val{{ index }}"
+                class="fadeIn second"
+                name="_val{{ index }}"
+                placeholder="Value1,Value2,Value3,..."
+                required
+              />
+            </div>
           </div>
-      
+          {% endfor %}
+          <input
+            type="text"
+            id="rowno"
+            class="fadeIn second"
+            name="rowno"
+            placeholder="Total Rows"
+            required
+          />
+          <br />
+          <input type="checkbox" id="is_plaintext" name="is_plaintext" value="YES" />
+          <label for="is_plaintext"> Plain Text Output</label>
+          <br />
+          <input type="submit" class="fadeIn fourth" value="Let's Mock!" />
+        </form>
+        <!-- Remind Passowrd -->
+        <div id="formFooter">
+          <a class="underlineHover" href="/">Back to Home</a>
         </div>
       </div>
-</body>
+    </div>
+  </body>
 </html>
