@@ -36,29 +36,6 @@ def getTemplateData(params):
     keys.append("id")
     return keys, tmp_data
 
-def to_csv(keys, data):
-    plaintxt = []
-    keys_row = ""
-    i = 0
-    for key in keys:
-        if i == 0:
-            keys_row += "id"
-        else:
-            keys_row = keys_row + "," + key
-        i += 1
-    plaintxt.append(keys_row)
-
-    for rec in data:
-        i = 0
-        txt = ""
-        for key in keys:
-            if i == 0:
-                txt += str(rec["id"])
-            else:
-                txt = txt + "," + str(rec[key])
-            i += 1
-        plaintxt.append(txt)
-    return plaintxt
 
 # Index
 @app.get("/", response_class=HTMLResponse)
@@ -74,7 +51,7 @@ async def index(request: Request):
 async def mock(request: Request):
     # check colno is integer
     try:
-        colno = int(str(request.query_params).replace("colno=",""))
+        colno = int(str(request.query_params).replace("colno=", ""))
         return templates.TemplateResponse("mock.html", {
             "request": request,
             "title": "Data Mocker",
@@ -82,10 +59,10 @@ async def mock(request: Request):
         })
     except:
         return templates.TemplateResponse("index.html", {
-        "request": request,
-        "title": "Data Mocker",
-        "status": False
-    })
+            "request": request,
+            "title": "Data Mocker",
+            "status": False
+        })
 
 # Mocked Page
 @app.get("/mocked", response_class=HTMLResponse)
@@ -102,15 +79,23 @@ async def mock(request: Request):
                 tmp[key] = raw_data[key][rd.randint(0, len(raw_data[key]) - 1)]
             data.append(tmp)
 
-        csv_data = to_csv(keys, data)
-
-        return templates.TemplateResponse("mocked.html", {
-            "request": request,
-            "title": "Data Mocker",
-            "status": True,
-            "keys": keys,
-            "data": data,
-        })
+        # Define Ouput Type
+        if re.findall(r'is_plaintext=YES', str(request.query_params)):
+            return templates.TemplateResponse("mocked_csv.html", {
+                "request": request,
+                "title": "Data Mocker",
+                "status": True,
+                "keys": keys,
+                "data": data,
+            })
+        else:
+            return templates.TemplateResponse("mocked.html", {
+                "request": request,
+                "title": "Data Mocker",
+                "status": True,
+                "keys": keys,
+                "data": data,
+            })
 
     else:
         return templates.TemplateResponse("mocked.html", {
