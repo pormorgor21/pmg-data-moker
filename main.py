@@ -3,13 +3,18 @@ import random as rd
 import re
 import io
 
-from fastapi import FastAPI, Request, Form
+from fastapi import FastAPI, Request, Form, Body
 from fastapi.responses import HTMLResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 
 
-app = FastAPI()
+app = FastAPI(
+    title="Data Mocker API",
+    description="This is a simplest data mocker way",
+    version="1.4.0",
+)
+
 templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -47,6 +52,8 @@ async def index(request: Request):
     })
 
 # Mocking Page
+
+
 @app.get("/mock", response_class=HTMLResponse)
 async def mock(request: Request):
     # check colno is integer
@@ -65,7 +72,10 @@ async def mock(request: Request):
         })
 
 # Mocked Page
-@app.get("/mocked", response_class=HTMLResponse)
+# @app.get("/mocked", response_class=HTMLResponse)
+
+
+@app.get("/mocked")
 async def mock(request: Request):
     if re.findall(r'rowno=[0-9]+', str(request.query_params)):
         rowNo = int(re.findall(
@@ -80,14 +90,12 @@ async def mock(request: Request):
             data.append(tmp)
 
         # Define Ouput Type
-        if re.findall(r'is_plaintext=YES', str(request.query_params)):
-            return templates.TemplateResponse("mocked_csv.html", {
-                "request": request,
-                "title": "Data Mocker",
-                "status": True,
-                "keys": keys,
-                "data": data,
-            })
+        if re.findall(r'api_mode=TRUE', str(request.query_params)):
+            return {
+                "Message": "Data Mocker",
+                "status": "OK",
+                "mocked_data": data
+            }
         else:
             return templates.TemplateResponse("mocked.html", {
                 "request": request,
@@ -112,3 +120,39 @@ async def howto(request: Request):
         "request": request,
         "title": "Data Mocker"
     })
+
+@app.get("/howtouse_api", response_class=HTMLResponse)
+async def howto(request: Request):
+    return templates.TemplateResponse("howtouse_api.html", {
+        "request": request,
+        "title": "Data Mocker"
+    })
+
+
+@app.post("/mock")
+async def getData(request: Request):
+    body = await request.json()
+    try:
+        rowNo = body["rowNo"]
+
+        data = []
+
+        for index in range(0, rowNo):
+            tmp = {}
+            tmp["id"] = index + 1
+            for key in body:
+                if key != "rowNo":
+                    tmp[key] = body[key][rd.randint(0, len(body[key]) - 1)]
+            data.append(tmp)
+
+        return {
+            "Message": "Data Mocker",
+            "status": "OK",
+            "mocked_data": data
+        }
+    except:
+        return {
+            "Message": "Data Mocker",
+            "status": "Failed",
+            "description": "Your Request Body have no 'rowNo'."
+        }
