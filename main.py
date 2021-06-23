@@ -8,6 +8,7 @@ from fastapi.responses import HTMLResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 
+from template_data import *
 
 app = FastAPI(
     title="Data Mocker API",
@@ -40,6 +41,7 @@ def getTemplateData(params):
         tmp_data[keys[i]] = vals.split("%2C")
     keys.append("id")
     return keys, tmp_data
+
 
 
 # Index
@@ -156,3 +158,27 @@ async def getData(request: Request):
             "status": "Failed",
             "description": "Your Request Body have no 'rowNo'."
         }
+
+@app.post("/th_province")
+def getProvince():
+    return {
+        "Message": "Data Mocker",
+        "status": "True",
+        "province": TH_PROVINCE
+    }
+
+@app.post("/th_amphur")
+def getAmphur():
+    return {
+        "Message": "Data Mocker",
+        "status": "True",
+        "province": TH_AMPHUR
+    }
+
+@app.post("/th_tambon")
+def getTambon():
+    return {
+        "Message": "Data Mocker",
+        "status": "True",
+        "tambon": TH_TAMBON
+    }
